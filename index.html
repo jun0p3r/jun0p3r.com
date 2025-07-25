@@ -11,7 +11,7 @@
   <meta property="og:image" content="https://jun0p3r.com/pfp.jpg">
   <meta name="theme-color" content="#CE1126">
   <meta property="og:url" content="https://jun0p3r.com">
-  <!-- Twitter card (for good measure) -->
+  <!-- Twitter card -->
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="jun0p3r">
   <meta name="twitter:description" content="jun0p3r.com">
@@ -134,16 +134,37 @@
       color: #fff;
       box-shadow: 0 4px 16px rgba(206,17,38,0.15);
     }
-    .contact-btn img {
-      height: 1.6em;
-      width: 1.6em;
-      vertical-align: middle;
+    .music-toggle-btn {
+      position: fixed;
+      bottom: 28px;
+      left: 0; right: 0;
+      margin: 0 auto;
+      z-index: 5;
       display: inline-block;
-      filter: drop-shadow(0 0 1px #fff);
+      background: #444;
+      color: #eee;
+      border: none;
+      border-radius: 8px;
+      font-size: 1em;
+      font-family: inherit;
+      padding: 0.5em 1.4em;
+      text-decoration: none;
+      text-align: center;
+      min-width: 108px;
+      transition: background 0.15s, color 0.15s;
+      opacity: 0.88;
+      box-shadow: 0 2px 8px rgba(40,40,40,0.10);
+      cursor: pointer;
+      outline: none;
+    }
+    .music-toggle-btn:hover, .music-toggle-btn:focus {
+      background: #CE1126;
+      color: #fff;
+      opacity: 1;
     }
     @supports (backdrop-filter: blur(8px)) or (-webkit-backdrop-filter: blur(8px)) {
       .card {
-        background: rgba(28,51,102,0.93); /* Canadiens blue with transparency */
+        background: rgba(28,51,102,0.93);
         backdrop-filter: blur(8px);
         -webkit-backdrop-filter: blur(8px);
       }
@@ -162,9 +183,7 @@
       avatar: "pfp.jpg",
       backgroundImage: "bg_load.jpg",
       backgroundVideo: "bg.mp4",
-      iconMail: "canadiens_mail.svg",
-      iconGithub: "canadiens_github.svg",
-      iconDiscord: "canadiens_discord.svg",
+      music: "bgm.mp3",
       // --- Visual customizations ---
       fontFamily: "'Segoe UI', Arial, sans-serif",
       backgroundColor: "#07090e",
@@ -195,22 +214,46 @@
       document.getElementById("bg-image").src = CONFIG.backgroundImage;
       document.getElementById("bg-video").src = CONFIG.backgroundVideo;
 
-      // Set up the contact buttons
+      // Set up the contact buttons (no icons, just text)
       const contactDiv = document.querySelector('.contact');
       contactDiv.innerHTML = `
-        <a class="contact-btn" href="mailto:${CONFIG.email}" title="Mail">
-          <img src="${CONFIG.iconMail}" alt="Mail">
-          Mail
-        </a>
-        <a class="contact-btn" href="${CONFIG.github}" target="_blank" title="GitHub">
-          <img src="${CONFIG.iconGithub}" alt="GitHub">
-          GitHub
-        </a>
-        <a class="contact-btn" href="${CONFIG.discord}" target="_blank" title="Discord">
-          <img src="${CONFIG.iconDiscord}" alt="Discord">
-          Discord
-        </a>
+        <a class="contact-btn" href="mailto:${CONFIG.email}" title="Mail">Mail</a>
+        <a class="contact-btn" href="${CONFIG.github}" target="_blank" title="GitHub">GitHub</a>
+        <a class="contact-btn" href="${CONFIG.discord}" target="_blank" title="Discord">Discord</a>
       `;
+
+      // Music & video controls
+      const music = document.getElementById('bg-music');
+      const video = document.getElementById('bg-video');
+      const toggleBtn = document.getElementById('music-toggle');
+
+      // For autoplay policies: Start music after user interacts
+      let musicStarted = false;
+      function startMusicOnce() {
+        if (!musicStarted) {
+          music.volume = 0.5;
+          music.loop = true;
+          music.play().catch(()=>{});
+          musicStarted = true;
+        }
+      }
+      document.body.addEventListener('pointerdown', startMusicOnce, {once:true});
+
+      // Toggle video/music
+      let paused = false;
+      function toggleMedia() {
+        paused = !paused;
+        if(paused) {
+          video.pause();
+          music.pause();
+          toggleBtn.textContent = "Resume video & music";
+        } else {
+          video.play();
+          music.play().catch(()=>{});
+          toggleBtn.textContent = "Pause video & music";
+        }
+      }
+      toggleBtn.addEventListener('click', toggleMedia);
     });
   </script>
 </head>
@@ -228,6 +271,8 @@
     <div class="company" id="company"></div>
     <div class="contact"></div>
   </div>
+  <audio id="bg-music" src="bgm.mp3" preload="auto"></audio>
+  <button id="music-toggle" class="music-toggle-btn">Pause video & music</button>
   <script>
     // Show video when ready, hide image
     const bgVideo = document.getElementById('bg-video');

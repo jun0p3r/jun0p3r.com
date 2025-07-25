@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Digital Business Card</title>
+  <title id="page-title">Digital Business Card</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     html, body {
@@ -13,13 +13,13 @@
     body {
       min-height: 100vh;
       margin: 0;
-      font-family: 'Segoe UI', Arial, sans-serif;
+      font-family: var(--font-family, 'Segoe UI', Arial, sans-serif);
       display: flex;
       align-items: center;
       justify-content: center;
       overflow: hidden;
       position: relative;
-      background: #0A2647; /* fallback */
+      background: var(--background-color, #0A2647);
     }
     .video-bg, .image-bg {
       position: fixed;
@@ -38,7 +38,7 @@
       position: absolute;
       top: 50%; left: 50%;
       transform: translate(-50%, -50%);
-      filter: blur(16px) brightness(0.7);
+      filter: blur(var(--blur-amount, 16px)) brightness(var(--brightness, 0.7));
       pointer-events: none;
       transition: opacity 0.5s;
       opacity: 1;
@@ -53,7 +53,7 @@
       opacity: 0;
     }
     .card {
-      background: #fff;
+      background: var(--card-bg, #fff);
       border-radius: 18px;
       box-shadow: 0 4px 20px rgba(10,38,71,0.18);
       padding: 2.5rem 2rem 2rem 2rem;
@@ -71,17 +71,17 @@
       height: 100px;
       border-radius: 50%;
       object-fit: cover;
-      border: 4px solid #2C74B3;
+      border: 4px solid var(--accent-color, #2C74B3);
       margin-bottom: 1rem;
     }
     .name {
       font-size: 1.5rem;
       font-weight: 700;
-      color: #0A2647;
+      color: var(--main-color, #0A2647);
       margin-bottom: 0.25rem;
     }
     .role {
-      color: #2C74B3;
+      color: var(--accent-color, #2C74B3);
       font-size: 1.1rem;
       margin-bottom: 1rem;
     }
@@ -95,7 +95,7 @@
       font-size: 1rem;
     }
     .contact a {
-      color: #2C74B3;
+      color: var(--accent-color, #2C74B3);
       text-decoration: none;
       margin: 0 0.5em;
       transition: color 0.2s;
@@ -114,7 +114,7 @@
       display: inline-block;
     }
     .btn-copy {
-      background: #2C74B3;
+      background: var(--accent-color, #2C74B3);
       color: #fff;
       border: none;
       border-radius: 6px;
@@ -141,56 +141,99 @@
       }
     }
   </style>
-</head>
-<body>
-  <div class="image-bg" aria-hidden="true">
-    <img id="bg-image" src="bg_load.jpg" alt="Background loading" draggable="false" />
-  </div>
-  <div class="video-bg" aria-hidden="true">
-    <video id="bg-video" src="bg.mp4" autoplay loop muted playsinline></video>
-  </div>
-  <div class="card">
-    <img class="avatar" src="pfp.webp" alt="Profile Photo">
-    <div class="name" id="name">jun0p3r</div>
-    <div class="role" id="role">i like designing stuff</div>
-    <div class="company" id="company"></div>
-    <div class="contact">
-      <a href="mailto:me@jun0p3r.com" title="Email">
-        <img src="email.svg" alt="Email">me@jun0p3r.com
-      </a>
-      <br>
-      <a href="https://github.com/jun0p3r" target="_blank" title="GitHub">
-        <img src="github.svg" alt="GitHub">GitHub
-      </a>
-      |
-      <a href="https://discord.com/users/669333028362780683" target="_blank" title="Discord">
-        <img src="discord.svg" alt="Discord">Discord
-      </a>
-    </div>
-    <button class="btn-copy" onclick="copyContact()">Copy Contact Info</button>
-    <div class="copied-msg" id="copiedMsg">Copied!</div>
-  </div>
   <script>
-    // Business card details
-    const details = {
+    // ==== CUSTOMIZE EVERYTHING HERE ====
+    const CONFIG = {
+      pageTitle: "Digital Business Card",
       name: "jun0p3r",
       role: "i like designing stuff",
       company: "",
       email: "me@jun0p3r.com",
       github: "https://github.com/jun0p3r",
       discord: "https://discord.com/users/669333028362780683",
-      avatar: "pfp.webp"
+      avatar: "pfp.webp",
+      backgroundImage: "bg_load.jpg",
+      backgroundVideo: "bg.mp4",
+      iconEmail: "email.svg",
+      iconGithub: "github.svg",
+      iconDiscord: "discord.svg",
+      // --- Visual customizations ---
+      fontFamily: "'Segoe UI', Arial, sans-serif",
+      backgroundColor: "#0A2647",
+      cardBg: "#fff",
+      mainColor: "#0A2647",
+      accentColor: "#2C74B3",
+      blurAmount: "16px",
+      brightness: "0.7"
     };
-    document.getElementById("name").innerText = details.name;
-    document.getElementById("role").innerText = details.role;
-    document.getElementById("company").innerText = details.company;
-    document.getElementById("email").innerText = details.email;
-    document.getElementById("email").href = "mailto:" + details.email;
-    document.querySelector(".avatar").src = details.avatar;
-    document.querySelector(".contact a[title='GitHub']").href = details.github;
-    document.querySelector(".contact a[title='Discord']").href = details.discord;
+    // ==== END OF CUSTOMIZATION SECTION ====
 
+    // Apply CSS variables for style customizations
+    document.documentElement.style.setProperty('--font-family', CONFIG.fontFamily);
+    document.documentElement.style.setProperty('--background-color', CONFIG.backgroundColor);
+    document.documentElement.style.setProperty('--card-bg', CONFIG.cardBg);
+    document.documentElement.style.setProperty('--main-color', CONFIG.mainColor);
+    document.documentElement.style.setProperty('--accent-color', CONFIG.accentColor);
+    document.documentElement.style.setProperty('--blur-amount', CONFIG.blurAmount);
+    document.documentElement.style.setProperty('--brightness', CONFIG.brightness);
+    window.addEventListener('DOMContentLoaded', () => {
+      document.title = CONFIG.pageTitle;
+      document.getElementById("page-title").innerText = CONFIG.pageTitle;
+      document.getElementById("name").innerText = CONFIG.name;
+      document.getElementById("role").innerText = CONFIG.role;
+      document.getElementById("company").innerText = CONFIG.company;
+      document.querySelector(".avatar").src = CONFIG.avatar;
+      document.getElementById("bg-image").src = CONFIG.backgroundImage;
+      document.getElementById("bg-video").src = CONFIG.backgroundVideo;
+      // Set contact links and icons
+      const emailLink = document.querySelector("a[title='Email']");
+      emailLink.href = "mailto:" + CONFIG.email;
+      emailLink.querySelector("img").src = CONFIG.iconEmail;
+      emailLink.querySelector("img").alt = "Email";
+      emailLink.childNodes[1].nodeValue = CONFIG.email;
+      const githubLink = document.querySelector("a[title='GitHub']");
+      githubLink.href = CONFIG.github;
+      githubLink.querySelector("img").src = CONFIG.iconGithub;
+      githubLink.querySelector("img").alt = "GitHub";
+      const discordLink = document.querySelector("a[title='Discord']");
+      discordLink.href = CONFIG.discord;
+      discordLink.querySelector("img").src = CONFIG.iconDiscord;
+      discordLink.querySelector("img").alt = "Discord";
+    });
+  </script>
+</head>
+<body>
+  <div class="image-bg" aria-hidden="true">
+    <img id="bg-image" src="" alt="Background loading" draggable="false" />
+  </div>
+  <div class="video-bg" aria-hidden="true">
+    <video id="bg-video" src="" autoplay loop muted playsinline></video>
+  </div>
+  <div class="card">
+    <img class="avatar" src="" alt="Profile Photo">
+    <div class="name" id="name"></div>
+    <div class="role" id="role"></div>
+    <div class="company" id="company"></div>
+    <div class="contact">
+      <a href="#" title="Email">
+        <img src="" alt="Email">
+        <!-- email will be inserted by JS -->
+      </a>
+      <br>
+      <a href="#" target="_blank" title="GitHub">
+        <img src="" alt="GitHub">GitHub
+      </a>
+      |
+      <a href="#" target="_blank" title="Discord">
+        <img src="" alt="Discord">Discord
+      </a>
+    </div>
+    <button class="btn-copy" onclick="copyContact()">Copy Contact Info</button>
+    <div class="copied-msg" id="copiedMsg">Copied!</div>
+  </div>
+  <script>
     function copyContact() {
+      const details = CONFIG;
       const text = `${details.name}\n${details.role}${details.company ? ' at ' + details.company : ''}\nEmail: ${details.email}\nGitHub: ${details.github}\nDiscord: ${details.discord}`;
       navigator.clipboard.writeText(text).then(function() {
         document.getElementById("copiedMsg").style.display = "block";
@@ -199,8 +242,7 @@
         }, 1800);
       });
     }
-
-    // Swap to video once video is loaded and can play
+    // Show video when ready, hide image
     const bgVideo = document.getElementById('bg-video');
     const bgImage = document.getElementById('bg-image');
     function showVideoBg() {

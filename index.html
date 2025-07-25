@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Digital Business Card</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      min-height: 100vh;
+      margin: 0;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+      background: #0A2647; /* fallback */
+    }
+    .video-bg, .image-bg {
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      z-index: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+    .video-bg video,
+    .image-bg img {
+      width: 100vw;
+      height: 56.25vw; /* 16:9 aspect ratio */
+      min-height: 100vh;
+      min-width: 177.77vh;
+      object-fit: cover;
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      filter: blur(16px) brightness(0.7);
+      pointer-events: none;
+      transition: opacity 0.5s;
+      opacity: 1;
+    }
+    .video-bg video {
+      opacity: 0;
+    }
+    .video-bg video.loaded {
+      opacity: 1;
+    }
+    .image-bg img.hide {
+      opacity: 0;
+    }
+    .card {
+      background: #fff;
+      border-radius: 18px;
+      box-shadow: 0 4px 20px rgba(10,38,71,0.18);
+      padding: 2.5rem 2rem 2rem 2rem;
+      max-width: 350px;
+      text-align: center;
+      transition: box-shadow 0.2s;
+      z-index: 2;
+      position: relative;
+    }
+    .card:hover {
+      box-shadow: 0 8px 30px rgba(44,116,179,0.25);
+    }
+    .avatar {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid #2C74B3;
+      margin-bottom: 1rem;
+    }
+    .name {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #0A2647;
+      margin-bottom: 0.25rem;
+    }
+    .role {
+      color: #2C74B3;
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+    }
+    .company {
+      font-size: 1rem;
+      color: #555;
+      margin-bottom: 1.25rem;
+    }
+    .contact {
+      margin: 1.25rem 0;
+      font-size: 1rem;
+    }
+    .contact a {
+      color: #2C74B3;
+      text-decoration: none;
+      margin: 0 0.5em;
+      transition: color 0.2s;
+      vertical-align: middle;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3em;
+    }
+    .contact a:hover {
+      color: #144272;
+    }
+    .contact img {
+      height: 1.2em;
+      width: 1.2em;
+      vertical-align: middle;
+      display: inline-block;
+    }
+    .btn-copy {
+      background: #2C74B3;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      padding: 0.6em 1.5em;
+      font-size: 1rem;
+      margin-top: 1rem;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .btn-copy:active {
+      background: #144272;
+    }
+    .copied-msg {
+      color: #259C6F;
+      font-size: 0.95em;
+      margin-top: 0.5em;
+      display: none;
+    }
+    @supports (backdrop-filter: blur(8px)) or (-webkit-backdrop-filter: blur(8px)) {
+      .card {
+        background: rgba(255,255,255,0.82);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="image-bg" aria-hidden="true">
+    <img id="bg-image" src="bg_load.jpg" alt="Background loading" draggable="false" />
+  </div>
+  <div class="video-bg" aria-hidden="true">
+    <video id="bg-video" src="bg.mp4" autoplay loop muted playsinline></video>
+  </div>
+  <div class="card">
+    <img class="avatar" src="pfp.webp" alt="Profile Photo">
+    <div class="name" id="name">jun0p3r</div>
+    <div class="role" id="role">i like designing stuff</div>
+    <div class="company" id="company"></div>
+    <div class="contact">
+      <a href="mailto:me@jun0p3r.com" title="Email">
+        <img src="email.svg" alt="Email">me@jun0p3r.com
+      </a>
+      <br>
+      <a href="https://github.com/jun0p3r" target="_blank" title="GitHub">
+        <img src="github.svg" alt="GitHub">GitHub
+      </a>
+      |
+      <a href="https://discord.com/users/669333028362780683" target="_blank" title="Discord">
+        <img src="discord.svg" alt="Discord">Discord
+      </a>
+    </div>
+    <button class="btn-copy" onclick="copyContact()">Copy Contact Info</button>
+    <div class="copied-msg" id="copiedMsg">Copied!</div>
+  </div>
+  <script>
+    // Business card details
+    const details = {
+      name: "jun0p3r",
+      role: "i like designing stuff",
+      company: "",
+      email: "me@jun0p3r.com",
+      github: "https://github.com/jun0p3r",
+      discord: "https://discord.com/users/669333028362780683",
+      avatar: "pfp.webp"
+    };
+    document.getElementById("name").innerText = details.name;
+    document.getElementById("role").innerText = details.role;
+    document.getElementById("company").innerText = details.company;
+    document.getElementById("email").innerText = details.email;
+    document.getElementById("email").href = "mailto:" + details.email;
+    document.querySelector(".avatar").src = details.avatar;
+    document.querySelector(".contact a[title='GitHub']").href = details.github;
+    document.querySelector(".contact a[title='Discord']").href = details.discord;
+
+    function copyContact() {
+      const text = `${details.name}\n${details.role}${details.company ? ' at ' + details.company : ''}\nEmail: ${details.email}\nGitHub: ${details.github}\nDiscord: ${details.discord}`;
+      navigator.clipboard.writeText(text).then(function() {
+        document.getElementById("copiedMsg").style.display = "block";
+        setTimeout(() => {
+          document.getElementById("copiedMsg").style.display = "none";
+        }, 1800);
+      });
+    }
+
+    // Swap to video once video is loaded and can play
+    const bgVideo = document.getElementById('bg-video');
+    const bgImage = document.getElementById('bg-image');
+    function showVideoBg() {
+      bgVideo.classList.add('loaded');
+      bgImage.classList.add('hide');
+    }
+    bgVideo.addEventListener('canplay', showVideoBg, {once:true});
+  </script>
+</body>
+</html>

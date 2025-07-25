@@ -19,7 +19,7 @@
       justify-content: center;
       overflow: hidden;
       position: relative;
-      background: var(--background-color, #0A2647);
+      background: var(--background-color, #07090e);
     }
     .video-bg, .image-bg {
       position: fixed;
@@ -31,14 +31,14 @@
     .video-bg video,
     .image-bg img {
       width: 100vw;
-      height: 56.25vw; /* 16:9 aspect ratio */
+      height: 56.25vw;
       min-height: 100vh;
       min-width: 177.77vh;
       object-fit: cover;
       position: absolute;
       top: 50%; left: 50%;
       transform: translate(-50%, -50%);
-      filter: blur(var(--blur-amount, 16px)) brightness(var(--brightness, 0.7));
+      filter: blur(var(--blur-amount, 22px)) brightness(var(--brightness, 0.45));
       pointer-events: none;
       transition: opacity 0.5s;
       opacity: 1;
@@ -53,9 +53,9 @@
       opacity: 0;
     }
     .card {
-      background: var(--card-bg, #fff);
+      background: var(--card-bg, #181b22);
       border-radius: 18px;
-      box-shadow: 0 4px 20px rgba(10,38,71,0.18);
+      box-shadow: 0 4px 24px rgba(10,38,71,0.2);
       padding: 2.5rem 2rem 2rem 2rem;
       max-width: 350px;
       text-align: center;
@@ -64,7 +64,7 @@
       position: relative;
     }
     .card:hover {
-      box-shadow: 0 8px 30px rgba(206,17,38,0.25); /* Canadiens red accent on hover */
+      box-shadow: 0 8px 34px rgba(206,17,38,0.30);
     }
     .avatar {
       width: 100px;
@@ -77,56 +77,60 @@
     .name {
       font-size: 1.5rem;
       font-weight: 700;
-      color: var(--main-color, #0A2647);
+      color: var(--main-color, #fff);
       margin-bottom: 0.25rem;
     }
     .role {
-      color: var(--accent-color, #CE1126); /* Canadiens red */
+      color: var(--accent-color, #CE1126);
       font-size: 1.1rem;
       margin-bottom: 1rem;
     }
     .company {
       font-size: 1rem;
-      color: #555;
+      color: #bbb;
       margin-bottom: 1.25rem;
     }
     .contact {
-      margin: 1.5rem 0 0.5rem 0;
-      font-size: 1.2rem;
+      margin: 2rem 0 0.8rem 0;
       display: flex;
-      justify-content: center;
-      gap: 1.3em;
+      flex-direction: column;
+      gap: 1em;
+      align-items: stretch;
     }
-    .contact a {
-      color: var(--accent-color, #CE1126);
-      text-decoration: none;
-      transition: color 0.2s;
-      vertical-align: middle;
-      display: inline-flex;
+    .contact-btn {
+      display: flex;
       align-items: center;
       justify-content: center;
+      gap: 0.8em;
+      background: var(--accent-color, #CE1126);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 0.7em 1.25em;
+      font-size: 1.08rem;
+      font-family: inherit;
+      font-weight: 500;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.18s, box-shadow 0.18s;
+      box-shadow: 0 2px 10px rgba(206,17,38,0.08);
+      outline: none;
     }
-    .contact a:hover {
-      color: #b81c2b;
+    .contact-btn:hover, .contact-btn:focus {
+      background: #b81c2b;
+      color: #fff;
+      box-shadow: 0 4px 16px rgba(206,17,38,0.15);
     }
-    .contact img {
-      height: 2.1em;
-      width: 2.1em;
+    .contact-btn img {
+      height: 1.6em;
+      width: 1.6em;
       vertical-align: middle;
       display: inline-block;
-      filter: drop-shadow(0 0 2px #fff);
-      /* Optionally, use CSS filter to tint logos if SVGs are black by default */
-      /* filter: invert(17%) sepia(93%) saturate(6372%) hue-rotate(346deg) brightness(90%) contrast(110%); */
-    }
-    .copied-msg {
-      color: #259C6F;
-      font-size: 0.95em;
-      margin-top: 0.5em;
-      display: none;
+      filter: drop-shadow(0 0 1px #fff);
     }
     @supports (backdrop-filter: blur(8px)) or (-webkit-backdrop-filter: blur(8px)) {
       .card {
-        background: rgba(255,255,255,0.82);
+        background: rgba(24,27,34,0.92);
         backdrop-filter: blur(8px);
         -webkit-backdrop-filter: blur(8px);
       }
@@ -145,16 +149,17 @@
       avatar: "pfp.jpg",
       backgroundImage: "bg_load.jpg",
       backgroundVideo: "https://raw.githubusercontent.com/jun0p3r/jun0p3r.com/refs/heads/main/bg.mp4",
-      // Use the same logo for all icons
-      iconUniversal: "canadiens.svg", // <- Place your Canadiens logo SVG in your repo
+      iconMail: "canadiens.svg",
+      iconGithub: "canadiens.svg",
+      iconDiscord: "canadiens.svg",
       // --- Visual customizations ---
       fontFamily: "'Segoe UI', Arial, sans-serif",
-      backgroundColor: "#0A2647",
-      cardBg: "#fff",
-      mainColor: "#0A2647",
+      backgroundColor: "#07090e", // darker background
+      cardBg: "#181b22",
+      mainColor: "#fff",
       accentColor: "#CE1126", // Canadiens red
-      blurAmount: "16px",
-      brightness: "0.7"
+      blurAmount: "22px",
+      brightness: "0.45"
     };
     // ==== END OF CUSTOMIZATION SECTION ====
 
@@ -166,6 +171,7 @@
     document.documentElement.style.setProperty('--accent-color', CONFIG.accentColor);
     document.documentElement.style.setProperty('--blur-amount', CONFIG.blurAmount);
     document.documentElement.style.setProperty('--brightness', CONFIG.brightness);
+
     window.addEventListener('DOMContentLoaded', () => {
       document.title = CONFIG.pageTitle;
       document.getElementById("page-title").innerText = CONFIG.pageTitle;
@@ -175,25 +181,23 @@
       document.querySelector(".avatar").src = CONFIG.avatar;
       document.getElementById("bg-image").src = CONFIG.backgroundImage;
       document.getElementById("bg-video").src = CONFIG.backgroundVideo;
-      // Set all contact links to use the same logo and only icons
-      const emailLink = document.querySelector("a[title='Email']");
-      emailLink.href = "mailto:" + CONFIG.email;
-      emailLink.querySelector("img").src = CONFIG.iconUniversal;
-      emailLink.querySelector("img").alt = "Email";
-      // Remove any text node after the image
-      emailLink.childNodes.forEach(n => { if (n.nodeType === 3) n.remove(); });
 
-      const githubLink = document.querySelector("a[title='GitHub']");
-      githubLink.href = CONFIG.github;
-      githubLink.querySelector("img").src = CONFIG.iconUniversal;
-      githubLink.querySelector("img").alt = "GitHub";
-      githubLink.childNodes.forEach(n => { if (n.nodeType === 3) n.remove(); });
-
-      const discordLink = document.querySelector("a[title='Discord']");
-      discordLink.href = CONFIG.discord;
-      discordLink.querySelector("img").src = CONFIG.iconUniversal;
-      discordLink.querySelector("img").alt = "Discord";
-      discordLink.childNodes.forEach(n => { if (n.nodeType === 3) n.remove(); });
+      // Set up the contact buttons
+      const contactDiv = document.querySelector('.contact');
+      contactDiv.innerHTML = `
+        <a class="contact-btn" href="mailto:${CONFIG.email}" title="Mail">
+          <img src="${CONFIG.iconMail}" alt="Mail">
+          Mail
+        </a>
+        <a class="contact-btn" href="${CONFIG.github}" target="_blank" title="GitHub">
+          <img src="${CONFIG.iconGithub}" alt="GitHub">
+          GitHub
+        </a>
+        <a class="contact-btn" href="${CONFIG.discord}" target="_blank" title="Discord">
+          <img src="${CONFIG.iconDiscord}" alt="Discord">
+          Discord
+        </a>
+      `;
     });
   </script>
 </head>
@@ -209,18 +213,7 @@
     <div class="name" id="name"></div>
     <div class="role" id="role"></div>
     <div class="company" id="company"></div>
-    <div class="contact">
-      <a href="#" title="Email">
-        <img src="" alt="Email">
-      </a>
-      <a href="#" target="_blank" title="GitHub">
-        <img src="" alt="GitHub">
-      </a>
-      <a href="#" target="_blank" title="Discord">
-        <img src="" alt="Discord">
-      </a>
-    </div>
-    <div class="copied-msg" id="copiedMsg"></div>
+    <div class="contact"></div>
   </div>
   <script>
     // Show video when ready, hide image

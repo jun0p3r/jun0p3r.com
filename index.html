@@ -53,9 +53,9 @@
       opacity: 0;
     }
     .card {
-      background: var(--card-bg, #181b22);
+      background: var(--card-bg, #1c3366); /* Canadiens blue */
       border-radius: 18px;
-      box-shadow: 0 4px 24px rgba(10,38,71,0.2);
+      box-shadow: 0 4px 24px rgba(10,38,71,0.25);
       padding: 2.5rem 2rem 2rem 2rem;
       max-width: 350px;
       text-align: center;
@@ -130,7 +130,7 @@
     }
     @supports (backdrop-filter: blur(8px)) or (-webkit-backdrop-filter: blur(8px)) {
       .card {
-        background: rgba(24,27,34,0.92);
+        background: rgba(28,51,102,0.93); /* Canadiens blue with transparency */
         backdrop-filter: blur(8px);
         -webkit-backdrop-filter: blur(8px);
       }
@@ -148,16 +148,16 @@
       discord: "https://discord.com/users/669333028362780683",
       avatar: "pfp.jpg",
       backgroundImage: "bg_load.jpg",
-      backgroundVideo: "https://raw.githubusercontent.com/jun0p3r/jun0p3r.com/refs/heads/main/bg.mp4",
-      iconMail: "canadiens.svg",
-      iconGithub: "canadiens.svg",
-      iconDiscord: "canadiens.svg",
+      backgroundVideo: "bg.mp4",
+      iconMail: "canadiens_mail.svg",    // use unique icons if you want, but all can be the same if desired
+      iconGithub: "canadiens_github.svg",
+      iconDiscord: "canadiens_discord.svg",
       // --- Visual customizations ---
       fontFamily: "'Segoe UI', Arial, sans-serif",
-      backgroundColor: "#07090e", // darker background
-      cardBg: "#181b22",
+      backgroundColor: "#07090e", // even darker
+      cardBg: "#1c3366",          // Canadiens blue
       mainColor: "#fff",
-      accentColor: "#CE1126", // Canadiens red
+      accentColor: "#CE1126",     // Canadiens red
       blurAmount: "22px",
       brightness: "0.45"
     };
@@ -182,7 +182,7 @@
       document.getElementById("bg-image").src = CONFIG.backgroundImage;
       document.getElementById("bg-video").src = CONFIG.backgroundVideo;
 
-      // Set up the contact buttons
+      // Set up the contact buttons (use different icons or the same, as you like)
       const contactDiv = document.querySelector('.contact');
       contactDiv.innerHTML = `
         <a class="contact-btn" href="mailto:${CONFIG.email}" title="Mail">

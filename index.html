@@ -4,6 +4,19 @@
   <meta charset="UTF-8">
   <title id="page-title">jun0p3r.com</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Social Preview (Discord/OG) -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="jun0p3r">
+  <meta property="og:description" content="jun0p3r.com">
+  <meta property="og:image" content="https://jun0p3r.com/pfp.jpg">
+  <meta name="theme-color" content="#CE1126">
+  <meta property="og:url" content="https://jun0p3r.com">
+  <!-- Twitter card (for good measure) -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="jun0p3r">
+  <meta name="twitter:description" content="jun0p3r.com">
+  <meta name="twitter:image" content="https://jun0p3r.com/pfp.jpg">
+  <meta name="twitter:url" content="https://jun0p3r.com">
   <style>
     html, body {
       height: 100%;
@@ -149,15 +162,15 @@
       avatar: "pfp.jpg",
       backgroundImage: "bg_load.jpg",
       backgroundVideo: "bg.mp4",
-      iconMail: "mail.svg",    // use unique icons if you want, but all can be the same if desired
-      iconGithub: "github.svg",
-      iconDiscord: "discord.svg",
+      iconMail: "canadiens_mail.svg",
+      iconGithub: "canadiens_github.svg",
+      iconDiscord: "canadiens_discord.svg",
       // --- Visual customizations ---
       fontFamily: "'Segoe UI', Arial, sans-serif",
-      backgroundColor: "#07090e", // even darker
-      cardBg: "#1c3366",          // Canadiens blue
+      backgroundColor: "#07090e",
+      cardBg: "#1c3366",
       mainColor: "#fff",
-      accentColor: "#CE1126",     // Canadiens red
+      accentColor: "#CE1126",
       blurAmount: "22px",
       brightness: "0.45"
     };
@@ -182,7 +195,7 @@
       document.getElementById("bg-image").src = CONFIG.backgroundImage;
       document.getElementById("bg-video").src = CONFIG.backgroundVideo;
 
-      // Set up the contact buttons (use different icons or the same, as you like)
+      // Set up the contact buttons
       const contactDiv = document.querySelector('.contact');
       contactDiv.innerHTML = `
         <a class="contact-btn" href="mailto:${CONFIG.email}" title="Mail">

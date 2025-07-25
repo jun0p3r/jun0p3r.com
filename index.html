@@ -141,26 +141,27 @@
       margin: 0 auto;
       z-index: 5;
       display: inline-block;
-      background: #444;
-      color: #eee;
+      background: none;
+      color: #cccccc;
       border: none;
-      border-radius: 8px;
+      border-radius: 0;
       font-size: 1em;
       font-family: inherit;
       padding: 0.5em 1.4em;
-      text-decoration: none;
+      text-decoration: underline;
       text-align: center;
       min-width: 108px;
-      transition: background 0.15s, color 0.15s;
-      opacity: 0.88;
-      box-shadow: 0 2px 8px rgba(40,40,40,0.10);
+      transition: color 0.15s, opacity 0.15s;
+      opacity: 0.60;
+      box-shadow: none;
       cursor: pointer;
       outline: none;
     }
     .music-toggle-btn:hover, .music-toggle-btn:focus {
-      background: #CE1126;
-      color: #fff;
+      color: #CE1126;
       opacity: 1;
+      background: none;
+      text-decoration: underline;
     }
     @supports (backdrop-filter: blur(8px)) or (-webkit-backdrop-filter: blur(8px)) {
       .card {

@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title id="page-title">jun0p3r.com | Ready to Vote?</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Social Preview (Discord/OG) -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="jun0p3r | Ready to Vote?">
+  <meta property="og:description" content="jun0p3r.com">
+  <meta property="og:image" content="https://jun0p3r.com/pfp.jpg">
+  <meta name="theme-color" content="#CE1126">
+  <meta property="og:url" content="https://jun0p3r.com/form_sdm.html">
+  <!-- Twitter card -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="jun0p3r | Ready to Vote?">
+  <meta name="twitter:description" content="jun0p3r.com">
+  <meta name="twitter:image" content="https://jun0p3r.com/pfp.jpg">
+  <meta name="twitter:url" content="https://jun0p3r.com/form_sdm.html">
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      min-height: 100vh;
+      margin: 0;
+      font-family: var(--font-family, 'Segoe UI', Arial, sans-serif);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+      background: var(--background-color, #07090e);
+    }
+    .video-bg, .image-bg {
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      z-index: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+    .video-bg video,
+    .image-bg img {
+      width: 100vw;
+      height: 56.25vw;
+      min-height: 100vh;
+      min-width: 177.77vh;
+      object-fit: cover;
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      filter: blur(var(--blur-amount, 22px)) brightness(var(--brightness, 0.45));
+      pointer-events: none;
+      transition: opacity 0.5s;
+      opacity: 1;
+    }
+    .video-bg video {
+      opacity: 0;
+    }
+    .video-bg video.loaded {
+      opacity: 1;
+    }
+    .image-bg img.hide {
+      opacity: 0;
+    }
+    .card {
+      background: var(--card-bg, #1c3366);
+      border-radius: 18px;
+      box-shadow: 0 4px 24px rgba(10,38,71,0.25);
+      padding: 2.5rem 2rem 2rem 2rem;
+      max-width: 350px;
+      text-align: center;
+      transition: box-shadow 0.2s;
+      z-index: 2;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .card:hover {
+      box-shadow: 0 8px 34px rgba(206,17,38,0.30);
+    }
+    .avatar {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid var(--accent-color, #CE1126);
+      margin-bottom: 1rem;
+    }
+    .name {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--main-color, #fff);
+      margin-bottom: 0.25rem;
+    }
+    .role {
+      color: var(--accent-color, #CE1126);
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+    }
+    .ready-text {
+      font-size: 1.3rem;
+      color: var(--main-color, #fff);
+      font-weight: 500;
+      margin: 1.5rem 0 2.2rem 0;
+      text-shadow: 0 1px 8px rgba(10,38,71,0.15);
+    }
+    .vote-btn {
+      background: var(--accent-color, #CE1126);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 0.7em 1.5em;
+      font-size: 1.08rem;
+      font-family: inherit;
+      font-weight: 500;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.18s, box-shadow 0.18s;
+      box-shadow: 0 2px 10px rgba(206,17,38,0.08);
+      outline: none;
+      margin-bottom: 1.5rem;
+    }
+    .vote-btn:hover, .vote-btn:focus {
+      background: #b81c2b;
+      color: #fff;
+      box-shadow: 0 4px 16px rgba(206,17,38,0.15);
+    }
+    .music-toggle-btn {
+      position: fixed;
+      bottom: 28px;
+      left: 0; right: 0;
+      margin: 0 auto;
+      z-index: 5;
+      display: inline-block;
+      background: none;
+      color: #cccccc;
+      border: none;
+      border-radius: 0;
+      font-size: 1em;
+      font-family: inherit;
+      padding: 0.5em 1.4em;
+      text-decoration: underline;
+      text-align: center;
+      min-width: 108px;
+      transition: color 0.15s, opacity 0.15s;
+      opacity: 0.60;
+      box-shadow: none;
+      cursor: pointer;
+      outline: none;
+    }
+    .music-toggle-btn:hover, .music-toggle-btn:focus {
+      color: #CE1126;
+      opacity: 1;
+      background: none;
+      text-decoration: underline;
+    }
+    /* --- Floating Modal Styles --- */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      z-index: 10000;
+      left: 0;
+      top: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(17, 26, 44, 0.55);
+      backdrop-filter: blur(5px);
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-overlay.active {
+      display: flex;
+    }
+    .modal-content {
+      background: #1c2b45;
+      border-radius: 14px;
+      box-shadow: 0 8px 32px rgba(28,51,102,0.22);
+      padding: 0;
+      max-width: 640px;
+      width: 90vw;
+      min-height: 500px;
+      position: relative;
+      z-index: 10001;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      overflow: hidden;
+    }
+    .modal-header {
+      padding: 1em 1.5em;
+      background: #20304e;
+      color: #fff;
+      font-size: 1.1rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .close-btn {
+      background: none;
+      border: none;
+      color: #CE1126;
+      font-size: 1.3em;
+      cursor: pointer;
+      font-family: inherit;
+      transition: color 0.18s;
+    }
+    .close-btn:hover, .close-btn:focus {
+      color: #fff;
+    }
+    .modal-iframe {
+      width: 100%;
+      height: 600px;
+      border: none;
+      background: #fff;
+      display: block;
+    }
+    @supports (backdrop-filter: blur(8px)) or (-webkit-backdrop-filter: blur(8px)) {
+      .card {
+        background: rgba(28,51,102,0.93);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+      }
+    }
+  </style>
+  <script>
+    // ==== CUSTOMIZE EVERYTHING HERE ====
+    const CONFIG = {
+      pageTitle: "jun0p3r.com | Ready to Vote?",
+      name: "jun0p3r",
+      role: "i like designing stuff",
+      avatar: "pfp.jpg",
+      backgroundImage: "bg_load.jpg",
+      backgroundVideo: "bg.mp4",
+      music: "bgm.mp3",
+      fontFamily: "'Segoe UI', Arial, sans-serif",
+      backgroundColor: "#07090e",
+      cardBg: "#1c3366",
+      mainColor: "#fff",
+      accentColor: "#CE1126",
+      blurAmount: "22px",
+      brightness: "0.45",
+      googleFormEmbed: "https://docs.google.com/forms/d/e/1FAIpQLSeJZ9faf6WdsZaYdykCzP_dczi-QJutRDngyRZG-_GHQzo99g/viewform?embedded=true"
+    };
+    // ==== END OF CUSTOMIZATION SECTION ====
+
+    // Apply CSS variables for style customizations
+    document.documentElement.style.setProperty('--font-family', CONFIG.fontFamily);
+    document.documentElement.style.setProperty('--background-color', CONFIG.backgroundColor);
+    document.documentElement.style.setProperty('--card-bg', CONFIG.cardBg);
+    document.documentElement.style.setProperty('--main-color', CONFIG.mainColor);
+    document.documentElement.style.setProperty('--accent-color', CONFIG.accentColor);
+    document.documentElement.style.setProperty('--blur-amount', CONFIG.blurAmount);
+    document.documentElement.style.setProperty('--brightness', CONFIG.brightness);
+
+    window.addEventListener('DOMContentLoaded', () => {
+      document.title = CONFIG.pageTitle;
+      document.getElementById("page-title").innerText = CONFIG.pageTitle;
+      document.getElementById("name").innerText = CONFIG.name;
+      document.getElementById("role").innerText = CONFIG.role;
+      document.querySelector(".avatar").src = CONFIG.avatar;
+      document.getElementById("bg-image").src = CONFIG.backgroundImage;
+      document.getElementById("bg-video").src = CONFIG.backgroundVideo;
+
+      // Music & video controls
+      const music = document.getElementById('bg-music');
+      const video = document.getElementById('bg-video');
+      const toggleBtn = document.getElementById('music-toggle');
+
+      // For autoplay policies: Start music after user interacts
+      let musicStarted = false;
+      function startMusicOnce() {
+        if (!musicStarted) {
+          music.volume = 0.5;
+          music.loop = true;
+          music.play().catch(()=>{});
+          musicStarted = true;
+        }
+      }
+      document.body.addEventListener('pointerdown', startMusicOnce, {once:true});
+
+      // Toggle video/music
+      let paused = false;
+      function toggleMedia() {
+        paused = !paused;
+        if(paused) {
+          video.pause();
+          music.pause();
+          toggleBtn.textContent = "Resume video & music";
+        } else {
+          video.play();
+          music.play().catch(()=>{});
+          toggleBtn.textContent = "Pause video & music";
+        }
+      }
+      toggleBtn.addEventListener('click', toggleMedia);
+
+      // Modal logic
+      const modalOverlay = document.getElementById('modal-overlay');
+      const openModalBtn = document.getElementById('open-vote-modal');
+      const closeModalBtn = document.getElementById('close-modal-btn');
+      const modalIframe = document.getElementById('modal-iframe');
+
+      openModalBtn.addEventListener('click', () => {
+        modalOverlay.classList.add('active');
+        modalIframe.src = CONFIG.googleFormEmbed;
+      });
+      closeModalBtn.addEventListener('click', () => {
+        modalOverlay.classList.remove('active');
+        modalIframe.src = "";
+      });
+      modalOverlay.addEventListener('click', (e) => {
+        if (e.target === modalOverlay) {
+          modalOverlay.classList.remove('active');
+          modalIframe.src = "";
+        }
+      });
+      window.addEventListener('keydown', (e) => {
+        if (e.key === "Escape" && modalOverlay.classList.contains('active')) {
+          modalOverlay.classList.remove('active');
+          modalIframe.src = "";
+        }
+      });
+    });
+  </script>
+</head>
+<body>
+  <div class="image-bg" aria-hidden="true">
+    <img id="bg-image" src="" alt="Background loading" draggable="false" />
+  </div>
+  <div class="video-bg" aria-hidden="true">
+    <video id="bg-video" src="" autoplay loop muted playsinline></video>
+  </div>
+  <div class="card">
+    <img class="avatar" src="" alt="Profile Photo">
+    <div class="name" id="name"></div>
+    <div class="role" id="role"></div>
+    <div class="ready-text">Ready to Vote?</div>
+    <button class="vote-btn" id="open-vote-modal">Open Voting Form</button>
+  </div>
+  <audio id="bg-music" src="bgm.mp3" preload="auto"></audio>
+  <button id="music-toggle" class="music-toggle-btn">Pause video & music</button>
+  <!-- Modal overlay for Google Form -->
+  <div class="modal-overlay" id="modal-overlay" aria-hidden="true">
+    <div class="modal-content" role="dialog" aria-modal="true" aria-label="Vote for SDM">
+      <div class="modal-header">
+        Vote for SDM
+        <button class="close-btn" id="close-modal-btn" title="Close" aria-label="Close">&times;</button>
+      </div>
+      <iframe id="modal-iframe" class="modal-iframe" src="" frameborder="0" allowfullscreen></iframe>
+    </div>
+  </div>
+  <script>
+    // Show video when ready, hide image
+    const bgVideo = document.getElementById('bg-video');
+    const bgImage = document.getElementById('bg-image');
+    function showVideoBg() {
+      bgVideo.classList.add('loaded');
+      bgImage.classList.add('hide');
+    }
+    bgVideo.addEventListener('canplay', showVideoBg, {once:true});
+  </script>
+</body>
+</html>
